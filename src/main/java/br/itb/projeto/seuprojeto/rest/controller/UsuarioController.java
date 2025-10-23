@@ -91,8 +91,8 @@ public class UsuarioController {
 	
 	@PutMapping("/editar/{id}")
 	public ResponseEntity<?> editar(@PathVariable long id,
-	        @RequestParam(required = false) MultipartFile file,
-	        @ModelAttribute Usuario usuario) {
+	        @ModelAttribute Usuario usuario,
+	        @RequestParam(required = false) MultipartFile file) {
 
 	    try {
 	        // Log dos dados recebidos para debug

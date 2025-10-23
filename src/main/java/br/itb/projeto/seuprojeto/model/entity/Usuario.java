@@ -2,6 +2,7 @@ package br.itb.projeto.seuprojeto.model.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,10 +19,15 @@ public class Usuario {
 	private String nome;
 	private String email;
 	private String senha;
+	
+	@Column(name = "nivelAcesso")
 	private String nivelAcesso; // ADMIN ou USER
+	
 	private byte[] foto;
 	private String bio;
 	private LocalDateTime dataCadastro;
+	
+	@Column(name = "statusUsuario")
 	private String statusUsuario; // ATIVO ou INATIVO ou TROCAR_SENHA
 	
 	public long getId() {
