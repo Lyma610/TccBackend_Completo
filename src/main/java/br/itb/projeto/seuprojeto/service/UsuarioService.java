@@ -140,12 +140,24 @@ public class UsuarioService {
 	    if (_usuario.isPresent()) {
 	        Usuario usuarioAtualizado = _usuario.get();
 	    
+	        // Atualizar todos os campos básicos
 	        usuarioAtualizado.setNome(usuario.getNome());
 	        usuarioAtualizado.setEmail(usuario.getEmail());
 	        usuarioAtualizado.setNivelAcesso(usuario.getNivelAcesso());
-	        
 	        usuarioAtualizado.setBio(usuario.getBio());
 	        
+	     // ✅ CORREÇÃO: Atualizar statusUsuario se fornecido
+	        if (usuario.getStatusUsuario() != null && !usuario.getStatusUsuario().isEmpty()) {
+	            usuarioAtualizado.setStatusUsuario(usuario.getStatusUsuario());
+	        }
+	        
+	        // ✅ CORREÇÃO: Atualizar senha se fornecida
+	        if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) {
+	            String senha = Base64.getEncoder().encodeToString(usuario.getSenha().getBytes());
+	            usuarioAtualizado.setSenha(senha);
+	        }
+	        
+	        // Atualizar foto se fornecida
 	        if (file != null && file.getSize() > 0) {
 	            try {
 	                usuarioAtualizado.setFoto(file.getBytes());

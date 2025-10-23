@@ -91,13 +91,35 @@ public class UsuarioController {
 	
 	@PutMapping("/editar/{id}")
 	public ResponseEntity<?> editar(@PathVariable long id,
-			@RequestParam(required = false) MultipartFile file,
-			@ModelAttribute Usuario usuario) {
+	        @RequestParam(required = false) MultipartFile file,
+	        @ModelAttribute Usuario usuario) {
 
-		Usuario _usuario = usuarioService.editar(file, id, usuario);
+	    try {
+	        // Log dos dados recebidos para debug
+	        System.out.println("=== EDITANDO USUÁRIO ===");
+	        System.out.println("ID: " + id);
+	        System.out.println("Nome: " + usuario.getNome());
+	        System.out.println("Email: " + usuario.getEmail());
+	        System.out.println("NivelAcesso: " + usuario.getNivelAcesso());
+	        System.out.println("Bio: " + usuario.getBio());
+	        System.out.println("StatusUsuario: " + usuario.getStatusUsuario());
+	        System.out.println("Arquivo: " + (file != null ? file.getOriginalFilename() : "null"));
 
-		return ResponseEntity.ok()
-				.body(new MessageResponse("Usuário alterado com sucesso!"));
+	        Usuario _usuario = usuarioService.editar(file, id, usuario);
+
+	        if (_usuario != null) {
+	            return ResponseEntity.ok()
+	                    .body(new MessageResponse("Usuário alterado com sucesso!"));
+	        } else {
+	            return ResponseEntity.badRequest()
+	                    .body(new MessageResponse("Usuário não encontrado!"));
+	        }
+	    } catch (Exception e) {
+	        System.err.println("Erro ao editar usuário: " + e.getMessage());
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(new MessageResponse("Erro interno do servidor: " + e.getMessage()));
+	    }
 	}
 	
 	@PutMapping("/alterarSenha/{id}")
